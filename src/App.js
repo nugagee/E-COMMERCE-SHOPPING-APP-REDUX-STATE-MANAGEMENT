@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   createOrder = (order) => {
-    alert("Welcome");
+    alert("Need to save order for " + order.name);
   }
 
   // FUNCTION THAT REMOVE ITEMS FROM CART
