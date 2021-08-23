@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import formatCurrency from "../util";
 import Modal from "react-modal";
+import { connect } from "react-redux";
+import { fetchProducts } from "../actions/productActions";
 
-export default class Products extends Component {
+class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {
             product: null,
         };
     }
+
+	// FETCHING THE PRODUCT INSIDE COMPONENTDIDMOUNT
+	componentDidMount() {
+		this.props.fetchProducts();
+	  }
 
 		// THE MODAL OPENS WHEN THE USER CLICKS ON THE PRODUCT
 		// WE FILL THE STATE PRODUCT WITH THE SELECTED PRODUCT
@@ -24,29 +31,35 @@ export default class Products extends Component {
 				const { product } = this.state;
         return (
             <div>
-                <ul className="products">
-                    {this.props.products.map((product) => (
-                        <li key={product._id}>
-                            <div className="product">
-                                {/* BY CLICKING ON THE IMAGE IT OPENS/ENABLE THE MODAL TO VIEW ITEM DETAILS AND INFORMATIONS */}
-                                <a 
-																	href={"#" + product._id} 
-																	onClick={() => this.openModal(product)}>
-                                    <img src={product.image} alt={product.title} />
-                                    <p>
-                                        {product.title}
-                                    </p>
-                                </a>
-                                <div className="product-price">
-                                    {/* FORMAT CURRENCY FUNCTIONS ADD $ TO THE PRICE AND CONVERT IT TO NUMBER */}
-                                    <div>{formatCurrency(product.price)}</div>
-                                    <button 
-                                    onClick={() => this.props.addToCart(product)} className="button primary">Add To Cart</button>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+				{
+					// USING CONDITIONAL RENDERING TO CHECK THE LIST OF PRODUCTS
+					!this.props.products ? 
+					(<div>Loading...</div>) :
+					(<ul className="products">
+						{this.props.products.map((product) => (
+							<li key={product._id}>
+								<div className="product">
+									{/* BY CLICKING ON THE IMAGE IT OPENS/ENABLE THE MODAL TO VIEW ITEM DETAILS AND INFORMATIONS */}
+									<a 
+																		href={"#" + product._id} 
+																		onClick={() => this.openModal(product)}>
+										<img src={product.image} alt={product.title} />
+										<p>
+											{product.title}
+										</p>
+									</a>
+									<div className="product-price">
+										{/* FORMAT CURRENCY FUNCTIONS ADD $ TO THE PRICE AND CONVERT IT TO NUMBER */}
+										<div>{formatCurrency(product.price)}</div>
+										<button 
+										onClick={() => this.props.addToCart(product)} className="button primary">Add To Cart</button>
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>)
+
+				}
 								{/* USING CONDITIONAL RENDERING TO CHECK IF PRODUCT EXIST, THEN SHOW A MODAL COMPONENT */}
 								{product && (
 									<Modal 
@@ -97,3 +110,14 @@ export default class Products extends Component {
         )
     }
 }
+
+// USING CONNECT TO CONNECT THE FUCTION THAT ACCEPT STATE THAT RETURN WHICH PART OF STATE TO US WHICH IS PRODUCT
+// SECOND PARAMETER IS LIST OF ACTION WHICH IS FETCH PRODUCT
+// CONNECT RETURN ANOTHER FUNCTION WHICH ACCEPTS A PARAMETER WHICH IS THE NAME OF COMPONENT TO CONNECT WHICH IS PRODUCTS
+export default connect(
+	(state) => ({ products: state.products.filteredItems }),
+	{
+	  fetchProducts,
+	//   addToCart,
+	}
+  )(Products);
