@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from "react-redux";
 import formatCurrency from "../util";
+import { removeFromCart } from "../actions/cartActions";
+// import { createOrder, clearOrder } from "../actions/orderActions";
 
 
-export default class Cart extends Component {
+class Cart extends Component {
 
     constructor(props) {
         super(props);
@@ -134,3 +137,13 @@ export default class Cart extends Component {
 
     }
 }
+
+export default connect(
+    (state) => ({
+    //   order: state.order.order,
+      cartItems: state.cart.cartItems,
+    }),
+    { removeFromCart, 
+        // createOrder, clearOrder 
+    }
+  )(Cart);
