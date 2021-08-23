@@ -226,6 +226,8 @@ Demo:
       28. import fetchProducts
       29. fetch products on did mount
       30. package.json
+          // WITH THIS PROXY WE DID NOT NEED TO PREFIX THE SERVER NAME IN EACH REQUEST
+          // "proxy": "http://localhost:5000",
       31. set proxy to http://127.0.0.1:5000
       32. npm run server
       33. check products list

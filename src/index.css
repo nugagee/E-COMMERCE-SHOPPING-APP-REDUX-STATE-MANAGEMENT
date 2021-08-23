@@ -202,7 +202,7 @@ input {
 
 /* Product Details */
 .products {
-  animation: slideInFromBottom 1.5s ease-in;
+  animation: slideInFromBottom 2s ease-in;
 }
 
 .product-details {
