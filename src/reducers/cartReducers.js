@@ -11,6 +11,7 @@ export const cartReducer = (
 ) => {
   switch (action.type) {
     case ADD_TO_CART:
+      // UPDATING THE STATE BASED ON THE NEW CART ITEM
       return { cartItems: action.payload.cartItems };
     case REMOVE_FROM_CART:
       return { cartItems: action.payload.cartItems };

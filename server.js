@@ -77,58 +77,64 @@ app.delete("/api/products/:id", async (req, res) => {
 
 
 // ==============================================
-// const Order = mongoose.model(
-//   "order",
-//   new mongoose.Schema(
-//     {
-//       _id: {
-//         type: String,
-//         default: shortid.generate,
-//       },
-//       email: String,
-//       name: String,
-//       address: String,
-//       total: Number,
-//       cartItems: [
-//         {
-//           _id: String,
-//           title: String,
-//           price: Number,
-//           count: Number,
-//         },
-//       ],
-//     },
-//     {
-//       timestamps: true,
-//     }
-//   )
-// );
+// THE FIRST PARAMETER IS THE NAME OF THE COLLECTION IN THE DATABASE AND THE SECOND IS THE NAME OF THE SCHEMA
+const Order = mongoose.model(
+  "order",
+  new mongoose.Schema(
+  // WE ENTER THE INFORMATION ABOUT THE ORDER MODEL
+    {
+      _id: {
+        type: String,
+        default: shortid.generate,
+      },
+      email: String,
+      name: String,
+      address: String,
+      total: Number,
+      cartItems: [
+        {
+          // DEFINING EACH ELEMENT OF THE ARRAY
+          _id: String,
+          title: String,
+          price: Number,
+          count: Number,
+        },
+      ],
+    },
+    {
+      // WITH THE TIMESTAMP SETTING, CREATED AT AND UPDATED AT FIELD WILL BE AUTOMATICALLY ADDED TO THE ORDER
+      timestamps: true,
+    }
+  )
+);
 
-// =================================================
+// POST API TO INSERT A NEW ITEM INTO THE ORDER COLLECTION
+app.post("/api/orders", async (req, res) => {
+  // CHECKING THE CLIENT DATA AND ENSURE THAT ALL REQUIRE FIELD EXIST
+  if (
+    !req.body.name ||
+    !req.body.email ||
+    !req.body.address ||
+    !req.body.total ||
+    !req.body.cartItems
+  ) {
+    return res.send({ message: "Data is required." });
+  }
+  // IF ALL REQUIRED FIELD EXIST THEN CREATE ORDER
+  const order = await Order(req.body).save();
+  res.send(order);
+});
 
-// app.post("/api/orders", async (req, res) => {
-//   if (
-//     !req.body.name ||
-//     !req.body.email ||
-//     !req.body.address ||
-//     !req.body.total ||
-//     !req.body.cartItems
-//   ) {
-//     return res.send({ message: "Data is required." });
-//   }
-//   const order = await Order(req.body).save();
-//   res.send(order);
-// });
-// app.get("/api/orders", async (req, res) => {
-//   const orders = await Order.find({});
-//   res.send(orders);
-// });
-// app.delete("/api/orders/:id", async (req, res) => {
-//   const order = await Order.findByIdAndDelete(req.params.id);
-//   res.send(order);
-// });
 
-// =======================================================
+app.get("/api/orders", async (req, res) => {
+  const orders = await Order.find({});
+  res.send(orders);
+});
+app.delete("/api/orders/:id", async (req, res) => {
+  const order = await Order.findByIdAndDelete(req.params.id);
+  res.send(order);
+});
+
 
 // DEFINING THE PORT, THE PORT NO COMES FROM PROCESS.ENV THAT SET THE PORT NO, BUT IF IT DOESNOT EXIST, IT USE THE DEFAULT PORT 5000
 const port = process.env.PORT || 5000;

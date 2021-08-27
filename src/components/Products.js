@@ -62,52 +62,52 @@ class Products extends Component {
 					</ul>)
 
 				}
-								{/* USING CONDITIONAL RENDERING TO CHECK IF PRODUCT EXIST, THEN SHOW A MODAL COMPONENT */}
-								{product && (
-									<Modal 
-										isOpen={true} 
-										onRequestClose={this.closeModal}>
-                                            <div className="modal">
-												<button
-                                                    className="close-modal"
-													onClick={this.closeModal}>
-														x
-													</button>
-													<div className="product-details">
-															<img src={product.image} alt={product.title} />
-															<div className="product-details-description">
-																<p>
-																	<strong>{product.title}</strong>
-																</p>
-																<p>
-																	{product.description}
-																</p>
-																<p>
-																	Available Sizes: {" "}
-																	{/* LOOPING THROUGH THE ARRAY OF THE AVAILABLE SIZES WITH MAP  */}
-																	{product.availableSizes.map((x) => (
-																		<span>
-																			{" "}
-																			<button className="button">{x}</button>
-																		</span>
-																	))}
-																</p>
-																<div className="product-price">
-																	<div>{formatCurrency(product.price)}</div>
-																	<button 
-																		className="button primary" 
-																		onClick={() => {
-																			this.props.addToCart(product);
-																			this.closeModal();
-																		}}>
-																			Add To Cart
-																		</button>
-																</div>
-															</div>
-													</div>
-                                                </div>
-									</Modal>
-								)}
+				{/* USING CONDITIONAL RENDERING TO CHECK IF PRODUCT EXIST, THEN SHOW A MODAL COMPONENT */}
+				{product && (
+					<Modal 
+						isOpen={true} 
+						onRequestClose={this.closeModal}>
+							<div className="modal">
+								<button
+									className="close-modal"
+									onClick={this.closeModal}>
+										x
+									</button>
+									<div className="product-details">
+											<img src={product.image} alt={product.title} />
+											<div className="product-details-description">
+												<p>
+													<strong>{product.title}</strong>
+												</p>
+												<p>
+													{product.description}
+												</p>
+												{/* <p>
+													Available Sizes: {" "}
+													LOOPING THROUGH THE ARRAY OF THE AVAILABLE SIZES WITH MAP 
+													{product.availableSizes.map((x) => (
+														<span>
+															{" "}
+															<button className="button">{x}</button>
+														</span>
+													))}
+												</p> */}
+												<div className="product-price">
+													<div>{formatCurrency(product.price)}</div>
+													<button 
+														className="button primary" 
+														onClick={() => {
+															this.props.addToCart(product);
+															this.closeModal();
+														}}>
+															Add To Cart
+														</button>
+												</div>
+											</div>
+									</div>
+								</div>
+					</Modal>
+				)}
             </div>
         )
     }
