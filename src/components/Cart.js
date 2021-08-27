@@ -103,7 +103,7 @@ class Cart extends Component {
                 <div>
                     <div className="cart">
                         <ul className="cart-items">
-                            {cartItems.map(item => (
+                            {cartItems.map((item) => (
                                 <li key={item._id} className="cart-item">
                                     <div>
                                         <img src={item.image} alt={item.title} />

@@ -1,4 +1,6 @@
-import { CREATE_ORDER, CLEAR_CART, CLEAR_ORDER, FETCH_ORDERS } from "../types";
+import { CREATE_ORDER, CLEAR_CART, CLEAR_ORDER, 
+  // FETCH_ORDERS
+ } from "../types";
 
 // CREATING THE FIRST ACTION FOR ORDER
 export const createOrder = (order) => (dispatch) => {
