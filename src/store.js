@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 // IT SHOULD BE INSIDE CURLY BRACES BECAUSE ITS A NAMED EXPORT AND NOT A DEFAULT EXPORT FROM LIBRARY
 import { productsReducer } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
-// import { orderReducer } from "./reducers/orderReducers";
+import { orderReducer } from "./reducers/orderReducers";
 
 // SETTING THE INITIAL STATE TO AN EMPTY OBJECT
 const initialState = {};
@@ -13,7 +13,7 @@ const store = createStore(
   combineReducers({
     products: productsReducer,
     cart: cartReducer,
-    // order: orderReducer,
+    order: orderReducer,
   }),
   initialState,
   composeEnhancer(applyMiddleware(thunk))

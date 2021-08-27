@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import formatCurrency from "../util";
+import Modal from "react-modal";
 import { removeFromCart } from "../actions/cartActions";
-// import { createOrder, clearOrder } from "../actions/orderActions";
+import { createOrder, clearOrder } from "../actions/orderActions";
 
 
 class Cart extends Component {
@@ -30,13 +31,19 @@ class Cart extends Component {
             email: this.state.email,
             address: this.state.address,
             cartItems: this.props.cartItems,
+            // USING ARFRAY REDUCE FUNCTION ON THE CART ITEMS: ACCUMULATOR AND CURRENT ITEM AND SETTING TEH DEFAULT OF ITEM OF ACCUMULATOR TO ZERO
+            total: this.props.cartItems.reduce((a,c) => a + c.price * c.count, 0 ),
         };
         this.props.createOrder(order);
+    };
+
+    closeModal = () => {
+        this.clearOrder();
     };
     
     render() {
         // GETTING THE CART ITEMS FROM THE PARENT COMPONENT
-        const {cartItems} = this.props;
+        const {cartItems, order} = this.props;
         return (
             <div>
                 {/* CHECKING IF CART IS EMPTY */}
@@ -47,6 +54,52 @@ class Cart extends Component {
                         You have {cartItems.length} in the cart {" "}
                     </div>
                 )}
+
+                {/* CHECKING IF ORDER EXIST AND SHOW IT IN MODAL */}
+                {order && (
+                    <Modal isOpen={true} onRequestClose={this.closeModal}>
+                        <button className="close-modal" onClick={this.closeModal}>
+                            x
+                        </button>
+                        <div className="order-details">
+                            <h3 className="success-message">Your order has been placed.</h3>
+                            <h2>Order {order._id}</h2>
+                            <ul>
+                            <li>
+                                <div>Name:</div>
+                                <div>{order.name}</div>
+                            </li>
+                            <li>
+                                <div>Email:</div>
+                                <div>{order.email}</div>
+                            </li>
+                            <li>
+                                <div>Address:</div>
+                                <div>{order.address}</div>
+                            </li>
+                            <li>
+                                <div>Date:</div>
+                                <div>{order.createdAt}</div>
+                            </li>
+                            <li>
+                                <div>Total:</div>
+                                <div>{formatCurrency(order.total)}</div>
+                            </li>
+                            <li>
+                                <div>Cart Items:</div>
+                                <div>
+                                    {/* LOOPING THROUGH THE ARRAY OF CART ITEMS */}
+                                {order.cartItems.map((x) => (
+                                    <div>
+                                    {x.count} {" x "} {x.title}
+                                    </div>
+                                ))}
+                                </div>
+                            </li>
+                            </ul>
+                        </div>
+                    </Modal>
+                    )}
                 <div>
                     <div className="cart">
                         <ul className="cart-items">
@@ -140,10 +193,10 @@ class Cart extends Component {
 
 export default connect(
     (state) => ({
-    //   order: state.order.order,
+      order: state.order.order,
       cartItems: state.cart.cartItems,
     }),
     { removeFromCart, 
-        // createOrder, clearOrder 
+        createOrder, clearOrder 
     }
   )(Cart);
